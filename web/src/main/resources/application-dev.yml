@@ -1,0 +1,86 @@
+server:
+  port: 8071
+spring:
+  datasource:
+    druid:
+      mysql:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://host:3306/cms?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowMultiQueries=true&rewriteBatchedStatements=true
+        username: root
+        password: 123456
+        initialSize: 5
+        minIdle: 5
+        maxActive: 10
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        maxEvictableIdleTimeMillis: 900000
+        poolPreparedStatements: false
+        validationQuery: select 1 from dual
+        validationQueryTimeout: 10000
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        keepAlive: true
+        filters: stat,slf4j
+        usePingMethod: false
+        useGlobalDataSourceStat: true
+# redis
+  redis:
+    database: 0
+    host: host
+    port: 6379
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+      shutdown-timeout: 1200
+# elasticsearch
+  elasticsearch:
+    uris: host:9200
+    connection-timeout: 3000
+    socket-timeout: 5000
+# jpa
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+# 分页组件
+page helper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+# rocketmq
+rocketmq:
+  name-server: host:9876
+  producer:
+    # 生产者分组,一个应用里面必须唯一
+    group: springboot-learning-producer
+    # 最大消息限制,默认为 128K = 128 * 1024,这里设置为 4M = 4 * 1024 * 1024
+    max-message-size: 4194304
+    #消息达到 4096 字节的时候,消息就会被压缩,默认4096
+    compress-message-body-threshold: 4096
+    # 是否开启消息追踪
+    enable-msg-trace: true
+    # 消息追踪日志使用的队列名字
+    customized-trace-topic: springboot-learning-trace-topic
+    #异步消息发送失败重试的次数
+    retry-times-when-send-async-failed: 3
+    #同步消息发送失败重试次数
+    retry-times-when-send-failed: 3
+    #消息发送的超时时间,默认为 3000ms
+    send-message-timeout: 3000
+    #在内部发送失败时是否重试其他代理,这个参数在有多个broker才生效
+    retry-next-server: true
+    #消费者配置
+  consumer:
+    # 集群消息 -> CLUSTERING 广播消息 -> BROADCASTING
+    message-model: CLUSTERING
+    pull-batch-size: 100
+

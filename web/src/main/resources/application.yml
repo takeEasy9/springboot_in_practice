@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: springboot_in_practice
+  profiles:
+    active: dev
